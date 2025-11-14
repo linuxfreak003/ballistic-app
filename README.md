@@ -1,8 +1,8 @@
-# README
+# ballistic-app
 
 ## About
 
-This is the official Wails Svelte-TS template.
+Ballistic Calculator App for calculating and comparing trajectories
 
 ## Live Development
 
