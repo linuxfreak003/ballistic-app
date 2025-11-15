@@ -3,29 +3,34 @@ package main
 import (
 	"context"
 
+	"github.com/linuxfreak003/ballistic-app/adapters/sql"
 	"github.com/linuxfreak003/ballistic-app/domain"
+	"github.com/linuxfreak003/ballistic-app/ports"
 )
 
 // App struct
 type App struct {
-	ctx context.Context
-	*domain.App
+	ports.Domain
 }
 
 // NewApp creates a new App application struct
 func NewApp() *App {
+	db, err := sql.NewSQLiteRepository("ballistic.db")
+	if err != nil {
+		panic(err)
+	}
 	return &App{
-		App: domain.New(),
+		Domain: domain.New(&domain.DomainConfig{
+			EnvironmentRepo: db,
+			RifleRepo:       db,
+			LoadRepo:        db,
+			ScenarioRepo:    db,
+		}),
 	}
 }
 
 // startup is called when the app starts. The context is saved
 // so we can call the runtime methods
 func (a *App) startup(ctx context.Context) {
-	a.ctx = ctx
+	a.Start(ctx)
 }
-
-// // Greet returns a greeting for the given name
-// func (a *App) Greet(name string) string {
-// 	return fmt.Sprintf("Hello %s, It's show time!", name)
-// }

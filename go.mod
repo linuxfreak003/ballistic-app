@@ -2,7 +2,12 @@ module github.com/linuxfreak003/ballistic-app
 
 go 1.23
 
-require github.com/wailsapp/wails/v2 v2.11.0
+require (
+	github.com/lib/pq v1.10.9
+	github.com/mattn/go-sqlite3 v1.14.32
+	github.com/sirupsen/logrus v1.9.3
+	github.com/wailsapp/wails/v2 v2.11.0
+)
 
 require (
 	github.com/bep/debounce v1.2.1 // indirect

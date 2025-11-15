@@ -1,25 +1,70 @@
 <script lang="ts">
-  import logo from './assets/images/logo-universal.png'
-  import {Greet} from '../wailsjs/go/main/App.js'
+  import {Greet, ListRifles} from '../wailsjs/go/main/App.js'
+  import type {ports} from '../wailsjs/go/models';
 
   let resultText: string = "Please enter your name below 👇"
   let name: string
+  let rifles: ports.Rifle[];
 
   function greet(): void {
     Greet(name).then(result => resultText = result)
   }
+
+  function listRifles(): void {
+    ListRifles().then(result => rifles = result)
+  }
 </script>
 
 <main>
-  <img alt="Wails logo" id="logo" src="{logo}">
   <div class="result" id="result">{resultText}</div>
   <div class="input-box" id="input">
     <input autocomplete="off" bind:value={name} class="input" id="name" type="text"/>
-    <button class="btn" on:click={greet}>Greet</button>
+    <button class="btn" on:click={greet}>Submit</button>
   </div>
+  <div class="input-box">
+    <button class="btn" on:click={listRifles}>List Rifles</button>
+  </div>
+
+  {#if rifles}
+    <table>
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Sight Height</th>
+        <th>Barrel Twist</th>
+        <th>Zero Range</th>
+      </tr>
+      </thead>
+      <tbody>
+      {#each rifles as rifle}
+        <tr>
+          <td>{rifle.name}</td>
+          <td>{rifle.sight_height}</td>
+          <td>{rifle.barrel_twist}</td>
+          <td>{rifle.zero_range}</td>
+        </tr>
+      {/each}
+      </tbody>
+    </table>
+  {/if}
 </main>
 
 <style>
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+
+  th {
+    background-color: #f2f2f2;
+  }
 
   #logo {
     display: block;
@@ -40,7 +85,7 @@
   }
 
   .input-box .btn {
-    width: 60px;
+    width: 100px;
     height: 30px;
     line-height: 30px;
     border-radius: 3px;
